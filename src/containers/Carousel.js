@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 
 import data from "../config/config";
@@ -17,6 +17,17 @@ const Slider = styled("div")`
 
 const Carousel = () => {
    const [index, setIndex] = useState(1);
+
+   const handleNext = () => {
+      if (index === data.length) setIndex(1);
+      else setIndex(index + 1);
+   };
+
+   useEffect(() => {
+      setTimeout(() => {
+         handleNext();
+      }, 5000);
+   }, [index]);
 
    const cardList = data.map(item => (
       <Card key={item.id} url={item.imageUrl} />
