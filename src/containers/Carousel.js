@@ -18,15 +18,22 @@ const Slider = styled("div")`
 const Carousel = () => {
    const [index, setIndex] = useState(1);
 
+   let timer = null;
+
+   const handlePrev = () => {
+      if (index === 1) setIndex(5);
+      else setIndex(index - 1);
+      clearTimeout(timer);
+   };
+
    const handleNext = () => {
       if (index === data.length) setIndex(1);
       else setIndex(index + 1);
+      clearTimeout(timer);
    };
 
    useEffect(() => {
-      setTimeout(() => {
-         handleNext();
-      }, 5000);
+      timer = setTimeout(handleNext, 5000);
    }, [index]);
 
    const cardList = data.map(item => (
@@ -36,7 +43,8 @@ const Carousel = () => {
    return (
       <Wrapper>
          <Slider scrollWidth={400 * (index - 1)}>{cardList}</Slider>
-         <div>{data.find(element => element.id === index).title}</div>
+         <div onClick={handlePrev}>prev</div>
+         <div onClick={handleNext}>next</div>
       </Wrapper>
    );
 };
