@@ -1,5 +1,6 @@
 import React from "react";
-import styled, { createGlobalStyle } from "styled-components";
+import { createGlobalStyle } from "styled-components";
+import Carousel from "./containers/Carousel";
 
 const GlobalStyle = createGlobalStyle`
     body {
@@ -9,6 +10,11 @@ const GlobalStyle = createGlobalStyle`
     }
 `;
 
-const App = () => <GlobalStyle>123</GlobalStyle>;
+const App = () => (
+   <>
+      <GlobalStyle />
+      <Carousel />
+   </>
+);
 
 export default App;
