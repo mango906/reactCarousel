@@ -13,7 +13,7 @@ import Card from "../components/Card";
 
 const Wrapper = styled("div")`
    width: 400px;
-   // overflow-x: hidden;
+   overflow-x: hidden;
 `;
 
 const Slider = styled("div")`
@@ -40,8 +40,6 @@ const Carousel = () => {
    const [data, setData] = useState(config)
    const [index, setIndex] = useState(1);
    const [input, setInput] = useInput("");
-
-
 
    const handlePrev = useCallback(() => {
       if (index === 1) setIndex(5);
