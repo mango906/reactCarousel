@@ -54,6 +54,10 @@ const Carousel = () => {
    }, [index, data.length]);
 
    const handleDelete = () => {
+      if (data.length === 1) {
+         alert("한개는 남겨놓으셔야 합니다.");
+         return;
+      }
       setData(data.filter((el) => el.id !== parseInt(input)));
       setInput("");
       clearTimeout(timer);
@@ -85,7 +89,7 @@ const Carousel = () => {
                onClick={handleNext}
             />
          </Nav>
-         <div>이미지 삭제</div>
+         <Title>이미지 삭제</Title>
          <input
             placeholder="id값을 입력해주세요."
             value={input}
