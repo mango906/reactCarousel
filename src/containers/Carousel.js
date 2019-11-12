@@ -1,5 +1,10 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+   faChevronCircleLeft,
+   faChevronCircleRight,
+} from "@fortawesome/free-solid-svg-icons";
 
 import data from "../config/config";
 import Card from "../components/Card";
@@ -13,6 +18,18 @@ const Slider = styled("div")`
    display: flex;
    transform: translateX(-${props => props.scrollWidth}px);
    transition: transform 0.45s;
+`;
+
+const Nav = styled("div")`
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   margin-top: 20px;
+`;
+
+const Title = styled("div")`
+   color: #fff;
+   margin: 0px 10px;
 `;
 
 const Carousel = () => {
@@ -43,8 +60,21 @@ const Carousel = () => {
    return (
       <Wrapper>
          <Slider scrollWidth={400 * (index - 1)}>{cardList}</Slider>
-         <div onClick={handlePrev}>prev</div>
-         <div onClick={handleNext}>next</div>
+         <Nav>
+            <FontAwesomeIcon
+               icon={faChevronCircleLeft}
+               color="#fff"
+               size="2x"
+               onClick={handlePrev}
+            />
+            <Title>{data[index - 1].title}</Title>
+            <FontAwesomeIcon
+               icon={faChevronCircleRight}
+               color="#fff"
+               size="2x"
+               onClick={handleNext}
+            />
+         </Nav>
       </Wrapper>
    );
 };
