@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -6,12 +6,14 @@ import {
    faChevronCircleRight,
 } from "@fortawesome/free-solid-svg-icons";
 
-import data from "../config/config";
+import useInput from "../hooks/useInput";
+
+import config from "../config/config";
 import Card from "../components/Card";
 
 const Wrapper = styled("div")`
    width: 400px;
-   overflow-x: hidden;
+   // overflow-x: hidden;
 `;
 
 const Slider = styled("div")`
@@ -32,26 +34,36 @@ const Title = styled("div")`
    margin: 0px 10px;
 `;
 
+let timer = null;
+
 const Carousel = () => {
+   const [data, setData] = useState(config)
    const [index, setIndex] = useState(1);
+   const [input, setInput] = useInput("");
 
-   let timer = null;
 
-   const handlePrev = () => {
+
+   const handlePrev = useCallback(() => {
       if (index === 1) setIndex(5);
       else setIndex(index - 1);
       clearTimeout(timer);
-   };
+   }, [index]);
 
-   const handleNext = () => {
+   const handleNext = useCallback(() => {
       if (index === data.length) setIndex(1);
       else setIndex(index + 1);
       clearTimeout(timer);
-   };
+   }, [index, data.length]);
+
+   const handleDelete = () => {
+      setData(data.filter((el) => el.id !== parseInt(input)));
+      setInput("");
+      clearTimeout(timer);
+   }
 
    useEffect(() => {
       timer = setTimeout(handleNext, 5000);
-   }, [index]);
+   }, [index, handleNext]);
 
    const cardList = data.map(item => (
       <Card key={item.id} url={item.imageUrl} />
@@ -67,7 +79,7 @@ const Carousel = () => {
                size="2x"
                onClick={handlePrev}
             />
-            <Title>{data[index - 1].title}</Title>
+            <Title>{data[index - 1] && data[index - 1].title}</Title>
             <FontAwesomeIcon
                icon={faChevronCircleRight}
                color="#fff"
@@ -75,6 +87,13 @@ const Carousel = () => {
                onClick={handleNext}
             />
          </Nav>
+         <div>이미지 삭제</div>
+         <input
+            placeholder="id값을 입력해주세요."
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+         />
+         <button onClick={handleDelete}>삭제</button>
       </Wrapper>
    );
 };
