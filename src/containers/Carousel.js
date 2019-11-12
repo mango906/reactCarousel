@@ -37,7 +37,7 @@ const Title = styled("div")`
 let timer = null;
 
 const Carousel = () => {
-   const [data, setData] = useState(config)
+   const [data, setData] = useState(config);
    const [index, setIndex] = useState(1);
    const [input, setInput] = useInput("");
 
@@ -53,15 +53,21 @@ const Carousel = () => {
       clearTimeout(timer);
    }, [index, data.length]);
 
-   const handleDelete = () => {
+   const handleDelete = useCallback(() => {
       if (data.length === 1) {
          alert("한개는 남겨놓으셔야 합니다.");
          return;
       }
-      setData(data.filter((el) => el.id !== parseInt(input)));
-      setInput("");
-      clearTimeout(timer);
-   }
+
+      const find = data.find(el => el.id === parseInt(input));
+
+      if (find) {
+         setData(data.filter(el => el.id !== parseInt(input)));
+         setInput("");
+         setIndex(1);
+         clearTimeout(timer);
+      }
+   }, [data, input, setInput]);
 
    useEffect(() => {
       timer = setTimeout(handleNext, 5000);
@@ -93,7 +99,7 @@ const Carousel = () => {
          <input
             placeholder="id값을 입력해주세요."
             value={input}
-            onChange={(e) => setInput(e.target.value)}
+            onChange={e => setInput(e.target.value)}
          />
          <button onClick={handleDelete}>삭제</button>
       </Wrapper>
